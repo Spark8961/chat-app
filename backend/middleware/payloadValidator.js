@@ -1,4 +1,4 @@
-export const validatePayload = (validator) => (req, res, next) => {
+export const validateRequestData = (validator) => (req, res, next) => {
     const { error } = validator.validate(req.body);
 
     if (error) {

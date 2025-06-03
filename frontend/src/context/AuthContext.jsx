@@ -5,7 +5,8 @@ export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const value = useMemo(() => ({ isAuthenticated, setIsAuthenticated }), [isAuthenticated]);
+    const [user, setUser] = useState(null);
+    const value = useMemo(() => ({ isAuthenticated, setIsAuthenticated, user, setUser }), [isAuthenticated, user]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

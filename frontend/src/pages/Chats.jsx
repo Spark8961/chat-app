@@ -1,5 +1,30 @@
+import axios from "axios";
+import { AuthContext } from "../context/AuthContext.jsx";
+import { useContext } from "react";
+
 const Chats = () => {
-    return <div>aaaaaaaaaaaaaaa</div>;
+    const { user, setUser, setIsAuthenticated } = useContext(AuthContext);
+
+    const handleLogout = async () => {
+        const result = await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`, {}, { withCredentials: true });
+        if (result.status === 200) {
+            setIsAuthenticated(false);
+            setUser(null);
+        }
+    };
+
+    return (
+        <div>
+            <div>
+                <p>Welcome {user.username}.</p>
+            </div>
+            <div>
+                <button className="btn btn-primary" onClick={handleLogout}>
+                    Sign Out
+                </button>
+            </div>
+        </div>
+    );
 };
 
 export default Chats;

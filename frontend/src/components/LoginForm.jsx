@@ -1,23 +1,34 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
+import { AuthContext } from "../context/AuthContext";
 
 const SigninForm = ({ switchForm }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { setIsAuthenticated, setUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const data = { email: email, password: password };
-        axios
-            .post(`${import.meta.env.VITE_API_URL}/auth/login`, data)
-            .then((result) => {
-                console.log(result.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+
+        try {
+            const result = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, data, { withCredentials: true });
+            if (result.status === 200) {
+                setIsAuthenticated(true);
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, { withCredentials: true });
+                setUser(res.data.user);
+                console.log(res.data.user);
+                navigate("/chats");
+            }
+        } catch (err) {
+            console.log(err);
+            setIsAuthenticated(false);
+            setUser(null);
+        }
     };
 
     return (

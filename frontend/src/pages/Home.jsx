@@ -3,7 +3,7 @@ import SigninForm from "../components/LoginForm.jsx";
 import { useState } from "react";
 
 const Home = () => {
-    const [isNew, setIsNew] = useState(true);
+    const [isNew, setIsNew] = useState(false);
 
     const changeForm = () => {
         setIsNew(!isNew);
