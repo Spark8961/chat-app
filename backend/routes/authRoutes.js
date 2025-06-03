@@ -1,14 +1,11 @@
 import express from "express";
-import { register, login, logout, verifyMe } from "../controllers/authController.js";
-import { registerValidator, loginValidator } from "../validators/authValidator.js";
-import { validateRequestData } from "../middleware/payloadValidator.js";
-import { verifyAuth } from "../middleware/verfiyAuth.js";
+import { register, login, logout, verifyMe } from "../controllers/auth/index.js";
+import { registerValidator, loginValidator } from "../validators/auth/index.js";
+import { validateRequestData, verifyAuth } from "../middleware/index.js";
 
-const router = express.Router();
+export const authRouter = express.Router();
 
-router.post("/register", validateRequestData(registerValidator), register);
-router.post("/login", validateRequestData(loginValidator), login);
-router.post("/logout", verifyAuth, logout);
-router.get("/me", verifyAuth, verifyMe);
-
-export default router;
+authRouter.post("/register", validateRequestData(registerValidator), register);
+authRouter.post("/login", validateRequestData(loginValidator), login);
+authRouter.post("/logout", verifyAuth, logout);
+authRouter.get("/me", verifyAuth, verifyMe);

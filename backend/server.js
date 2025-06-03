@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
-import homeRoutes from "./routes/homeRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
+
+import { authRouter, chatRouter } from "./routes/index.js";
 
 dotenv.config();
 const app = express();
@@ -15,8 +15,8 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
-app.use("/api", homeRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRouter);
+app.use("/api/chats", chatRouter);
 
 mongoose
     .connect(process.env.MONGO_URI)
