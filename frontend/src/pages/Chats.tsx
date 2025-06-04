@@ -5,7 +5,7 @@ import ChatList from "../components/chats/ChatList.jsx";
 import ChatContent from "../components/chats/ChatContent.jsx";
 
 const Chats = () => {
-    const { user, setUser, setIsAuthenticated } = useContext(AuthContext);
+    const { user, setUser, setIsAuthenticated } = useContext(AuthContext)!;
 
     const handleLogout = async () => {
         const result = await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`, {}, { withCredentials: true });
@@ -18,7 +18,7 @@ const Chats = () => {
     return (
         <div>
             <div>
-                <p>Welcome {user.username}.</p>
+                <p>Welcome {user?.username}.</p>
             </div>
             <div>
                 <button className="btn btn-primary" onClick={handleLogout}>

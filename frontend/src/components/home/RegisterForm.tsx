@@ -1,14 +1,16 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
+
 import axios from "axios";
 
-const RegisterForm = ({ switchForm }) => {
+import { FormProps } from "./types";
+
+const RegisterForm: React.FC<FormProps> = ({ switchForm }) => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const data = { username: username, email: email, password: password };
@@ -55,10 +57,6 @@ const RegisterForm = ({ switchForm }) => {
             </div>
         </div>
     );
-};
-
-RegisterForm.propTypes = {
-    switchForm: PropTypes.func.isRequired,
 };
 
 export default RegisterForm;

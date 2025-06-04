@@ -1,16 +1,17 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
+
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext.jsx";
+import { FormProps } from "./types.js";
 
-const SigninForm = ({ switchForm }) => {
+const SigninForm = ({ switchForm }: FormProps) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { setIsAuthenticated, setUser } = useContext(AuthContext);
+    const { setIsAuthenticated, setUser } = useContext(AuthContext)!;
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const data = { email: email, password: password };
@@ -56,10 +57,6 @@ const SigninForm = ({ switchForm }) => {
             </div>
         </div>
     );
-};
-
-SigninForm.propTypes = {
-    switchForm: PropTypes.func.isRequired,
 };
 
 export default SigninForm;
