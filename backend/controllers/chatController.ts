@@ -1,22 +1,23 @@
 import { Request, Response } from "express";
 
 import { Chat, User } from "../models/index";
+import { getChats } from "../services/index";
 
 export const getUserChats = async (req: Request, res: Response) => {
     try {
-        const userID = req;
+        const userID = req.user?.userId;
         if (!userID) {
             res.status(401).json({ error: "User ID missing from token" });
             return;
         }
 
-        const chatIds = await User.findById(userID, { chats: 1, _id: 0 });
-        if (!chatIds) {
+        const chatList = await getChats(userID);
+        if (!chatList) {
             res.status(404).json({ error: "User not found" });
             return;
         }
-        const chatData = await Chat.find({ _id: { $in: chatIds.chats } }, { name: 1 });
-        res.status(200).json(chatData);
+
+        res.status(200).json(chatList);
         return;
     } catch (err) {
         console.error(err);

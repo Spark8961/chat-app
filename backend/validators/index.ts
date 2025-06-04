@@ -1,2 +1,2 @@
-export { loginValidator, registerValidator } from "./authValidator";
-export { envValidator } from "./envValidator";
+export * from "./authValidator";
+export * from "./envValidator";

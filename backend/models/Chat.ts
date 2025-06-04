@@ -1,10 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType, Types } from "mongoose";
 
-const chatSchema = new mongoose.Schema({
+const ChatSchema = new mongoose.Schema({
     name: String,
     users: [mongoose.Schema.Types.ObjectId],
     owner: mongoose.Schema.Types.ObjectId,
     messages: [mongoose.Schema.Types.ObjectId],
 });
 
-export const Chat = mongoose.model("Chat", chatSchema);
+export const Chat = mongoose.model("Chat", ChatSchema);
+export type IChat = InferSchemaType<typeof ChatSchema> & { _id: Types.ObjectId };
