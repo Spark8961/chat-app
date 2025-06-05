@@ -25,11 +25,13 @@ const Chats = () => {
                     Sign Out
                 </button>
             </div>
-            <div style={{ display: "inline-block", width: "45%" }}>
-                <ChatList />
-            </div>
-            <div style={{ display: "inline-block", width: "45%" }}>
-                <ChatContent />
+            <div style={{ display: "flex", flexWrap: "nowrap" }}>
+                <div style={{ width: "45%" }}>
+                    <ChatList />
+                </div>
+                <div style={{ width: "45%" }}>
+                    <ChatContent />
+                </div>
             </div>
         </div>
     );

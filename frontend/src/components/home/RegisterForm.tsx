@@ -14,7 +14,7 @@ const RegisterForm: React.FC<FormProps> = ({ switchForm }) => {
         e.preventDefault();
 
         const data = { username: username, email: email, password: password };
-        axios
+        await axios
             .post(`${import.meta.env.VITE_API_URL}/auth/register`, data)
             .then((result) => {
                 console.log(result.data);
