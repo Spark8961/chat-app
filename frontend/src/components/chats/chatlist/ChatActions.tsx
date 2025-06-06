@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 enum ActionStates {
@@ -13,6 +14,15 @@ const ChatActions = () => {
 
     const createChat = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const data = { name: chatName };
+        await axios
+            .post(`${import.meta.env.VITE_API_URL}/chats`, data, { withCredentials: true })
+            .then((result) => {
+                console.log(result.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
     const joinChat = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

@@ -8,6 +8,7 @@ type ChatListData = {
     name: string;
 };
 
+//TODO Also setup WebSockets and check out React Query
 const ChatList = () => {
     const [data, setData] = useState<ChatListData[]>();
 
@@ -17,7 +18,6 @@ const ChatList = () => {
                 .get(`${import.meta.env.VITE_API_URL}/chats`, { withCredentials: true })
                 .then((res) => {
                     setData(res.data);
-                    console.log(res.data);
                 })
                 .catch((err) => {
                     console.error(err);

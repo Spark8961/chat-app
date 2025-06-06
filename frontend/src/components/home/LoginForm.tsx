@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import { AuthContext } from "../../context/AuthContext.jsx";
+import { AuthContext } from "../../context/AuthContext";
 import { FormProps } from "./types.js";
 
 const SigninForm = ({ switchForm }: FormProps) => {
@@ -22,7 +22,6 @@ const SigninForm = ({ switchForm }: FormProps) => {
                 setIsAuthenticated(true);
                 const res = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, { withCredentials: true });
                 setUser(res.data.user);
-                console.log(res.data.user);
                 navigate("/chats");
             }
         } catch (err) {

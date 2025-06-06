@@ -1,10 +1,10 @@
 import mongoose, { InferSchemaType, Types } from "mongoose";
 
 const ChatSchema = new mongoose.Schema({
-    name: String,
-    users: [mongoose.Schema.Types.ObjectId],
-    owner: mongoose.Schema.Types.ObjectId,
-    messages: [mongoose.Schema.Types.ObjectId],
+    name: { type: String, required: true },
+    users: { type: [mongoose.Schema.Types.ObjectId], required: true },
+    owner: { type: mongoose.Schema.Types.ObjectId, required: true },
+    messages: { type: [mongoose.Schema.Types.ObjectId], default: [], required: true },
 });
 
 export const Chat = mongoose.model("Chat", ChatSchema);

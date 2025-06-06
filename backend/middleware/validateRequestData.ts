@@ -4,7 +4,7 @@ import { Request, Response, NextFunction, RequestHandler } from "express";
 export const validateRequestData =
     (validator: ObjectSchema): RequestHandler =>
     (req: Request, res: Response, next: NextFunction): void => {
-        const { error } = validator.validate(req.body);
+        const { error } = validator.validate(req.body, { abortEarly: false });
 
         if (error) {
             const errors = error.details.map((e) => ({

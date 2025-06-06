@@ -1,5 +1,5 @@
-import RegisterForm from "../components/home/RegisterForm.jsx";
-import SigninForm from "../components/home/LoginForm.jsx";
+import RegisterForm from "../components/home/RegisterForm";
+import SigninForm from "../components/home/LoginForm";
 import { useState } from "react";
 
 const Home = () => {

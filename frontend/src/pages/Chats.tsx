@@ -1,8 +1,8 @@
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext.jsx";
+import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
-import ChatList from "../components/chats/ChatList.jsx";
-import ChatContent from "../components/chats/ChatContent.jsx";
+import ChatList from "../components/chats/ChatList";
+import ChatContent from "../components/chats/ChatContent";
 
 const Chats = () => {
     const { user, setUser, setIsAuthenticated } = useContext(AuthContext)!;

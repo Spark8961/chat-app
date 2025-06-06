@@ -18,6 +18,11 @@ export const findUserByEmail = async (email: string, inclPass: boolean = false):
     return user;
 };
 
+export const findUserByID = async (id: string): Promise<NoPassUser | null> => {
+    let user = await User.findOne({ _id: id }).select("-password").lean<NoPassUser>();
+    return user;
+};
+
 export const authenticateUser = async (user: IUser, password: string): Promise<string | null> => {
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return null;

@@ -1,8 +1,10 @@
 import express from "express";
 
-import { getUserChats } from "../controllers/chatController";
-import { verifyAuth } from "../middleware/index";
+import { getChatsController, createChatsController } from "../controllers/chatController";
+import { verifyAuth, validateRequestData } from "../middleware/index";
+import { createValidator } from "../validators/index";
 
 export const chatRouter = express.Router();
 
-chatRouter.get("/", verifyAuth, getUserChats);
+chatRouter.get("/", verifyAuth, getChatsController);
+chatRouter.post("/", verifyAuth, validateRequestData(createValidator), createChatsController);

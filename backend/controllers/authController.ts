@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { findUserByEmail, authenticateUser, registerUser } from "../services/authService";
 
-export const login = async (req: Request, res: Response) => {
+export const loginController = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     try {
@@ -29,7 +29,7 @@ export const login = async (req: Request, res: Response) => {
     }
 };
 
-export const logout = async (req: Request, res: Response) => {
+export const logoutController = async (req: Request, res: Response) => {
     try {
         res.status(200)
             .cookie("token", "", { httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "strict", maxAge: 0 })
@@ -42,7 +42,7 @@ export const logout = async (req: Request, res: Response) => {
     }
 };
 
-export const register = async (req: Request, res: Response) => {
+export const registerController = async (req: Request, res: Response) => {
     const { email } = req.body;
 
     try {
@@ -62,7 +62,7 @@ export const register = async (req: Request, res: Response) => {
     }
 };
 
-export const verifyMe = async (req: Request, res: Response) => {
+export const verifyController = async (req: Request, res: Response) => {
     try {
         res.status(200).json({ authenticated: true });
         return;

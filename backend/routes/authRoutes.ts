@@ -1,12 +1,12 @@
 import express from "express";
 
-import { register, login, logout, verifyMe } from "../controllers/authController";
+import { registerController, loginController, logoutController, verifyController } from "../controllers/authController";
 import { registerValidator, loginValidator } from "../validators/index";
 import { validateRequestData, verifyAuth } from "../middleware/index";
 
 export const authRouter = express.Router();
 
-authRouter.post("/register", validateRequestData(registerValidator), register);
-authRouter.post("/login", validateRequestData(loginValidator), login);
-authRouter.post("/logout", verifyAuth, logout);
-authRouter.get("/me", verifyAuth, verifyMe);
+authRouter.post("/register", validateRequestData(registerValidator), registerController);
+authRouter.post("/login", validateRequestData(loginValidator), loginController);
+authRouter.post("/logout", verifyAuth, logoutController);
+authRouter.get("/me", verifyAuth, verifyController);
