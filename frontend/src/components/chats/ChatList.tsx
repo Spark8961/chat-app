@@ -1,30 +1,23 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
 import ChatActions from "./chatlist/ChatActions";
 import YesChats from "./chatlist/YesChats";
+import { useQuery } from "@tanstack/react-query";
 
 type ChatListData = {
     _id: string;
     name: string;
 };
 
-//TODO Also setup WebSockets and check out React Query
+const fetchChats = async (): Promise<ChatListData[]> => {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/chats`, { withCredentials: true });
+    return res.data;
+};
 const ChatList = () => {
-    const [data, setData] = useState<ChatListData[]>();
+    const { data, isLoading, isError } = useQuery({ queryKey: ["chats"], queryFn: fetchChats });
 
-    useEffect(() => {
-        const fetchChats = async () => {
-            await axios
-                .get(`${import.meta.env.VITE_API_URL}/chats`, { withCredentials: true })
-                .then((res) => {
-                    setData(res.data);
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-        };
-        fetchChats();
-    }, []);
+    if (isLoading) return <p>Loading</p>;
+    if (isError) return <p>Error</p>;
+
     return (
         <div className="container">
             <div>Chat list</div>
