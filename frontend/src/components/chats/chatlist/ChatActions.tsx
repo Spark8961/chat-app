@@ -14,6 +14,12 @@ const createChat = async (name: string) => {
     return result;
 };
 
+const joinChat = async (id: string) => {
+    const data = { chat_id: id };
+    const result = await axios.post(`${import.meta.env.VITE_API_URL}/chats/join`, data, { withCredentials: true });
+    return result;
+};
+
 const ChatActions = () => {
     const [action, setAction] = useState<ActionStates>(ActionStates.Base);
     const [chatName, setChatName] = useState<string>("");
@@ -29,6 +35,15 @@ const ChatActions = () => {
         },
     });
 
+    const joinMutation = useMutation({
+        mutationFn: joinChat,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["chats"] });
+            setChatId("");
+            setAction(ActionStates.Base);
+        },
+    });
+
     const handleCreateSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         createMutation.mutate(chatName);
@@ -36,6 +51,7 @@ const ChatActions = () => {
 
     const handleJoinSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        joinMutation.mutate(chatId);
     };
 
     let content;
@@ -79,7 +95,7 @@ const ChatActions = () => {
                         </div>
                         <span>
                             <button className="btn btn-primary self-start" type="submit">
-                                Create
+                                Join
                             </button>
                             <button className="btn btn-primary self-start" type="button" onClick={() => setAction(ActionStates.Base)}>
                                 Back

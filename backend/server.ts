@@ -9,7 +9,6 @@ const { FRONTEND_URL, MONGO_URI, SERVER_PORT } = env;
 
 import { authRouter, chatRouter } from "./routes/index";
 
-//TODO Setup Websockets
 const app = express();
 
 app.use(express.json());
