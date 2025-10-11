@@ -7,7 +7,7 @@ type ProtectedRouteProps = {
 };
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     const { isAuthenticated } = useContext(AuthContext)!;
-    return isAuthenticated ? children : <Navigate to={"/"} replace />;
+    return isAuthenticated ? <>{children}</> : <Navigate to={"/"} replace />;
 };
 
 export default ProtectedRoute;

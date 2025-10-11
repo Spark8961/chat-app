@@ -10,6 +10,9 @@ const RegisterForm: React.FC<FormProps> = ({ switchForm }) => {
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
 
+    const [error, setError] = useState(false);
+    const [errorMessages, setErrorMessages] = useState<any[]>([]);
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -21,6 +24,10 @@ const RegisterForm: React.FC<FormProps> = ({ switchForm }) => {
             })
             .catch((err) => {
                 console.log(err);
+                setError(true);
+                const messages = err.response?.data?.errors?.map((e: any) => `${e.message}`) || [err.response?.data?.error] || ["An unknown error occurred."];
+
+                setErrorMessages(messages);
             });
     };
 
@@ -47,6 +54,15 @@ const RegisterForm: React.FC<FormProps> = ({ switchForm }) => {
                     <button className="btn btn-primary self-start" type="submit">
                         Register
                     </button>
+                </div>
+                <div>
+                    {error && (
+                        <div>
+                            {errorMessages.map((m, i) => (
+                                <p key={i}>{m}</p>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </form>
             <div>
