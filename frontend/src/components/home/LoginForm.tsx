@@ -8,6 +8,8 @@ import { FormProps } from "./types.js";
 const SigninForm = ({ switchForm }: FormProps) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const { setIsAuthenticated, setUser } = useContext(AuthContext)!;
     const navigate = useNavigate();
 
@@ -24,8 +26,15 @@ const SigninForm = ({ switchForm }: FormProps) => {
                 setUser(res.data.user);
                 navigate("/chats");
             }
+            if (result.status === 401) {
+                setIsAuthenticated(false);
+            }
         } catch (err) {
             console.log(err);
+            if (axios.isAxiosError(err)) {
+                setError(true);
+                setErrorMessage(err.response?.data?.error);
+            }
             setIsAuthenticated(false);
             setUser(null);
         }
@@ -42,6 +51,7 @@ const SigninForm = ({ switchForm }: FormProps) => {
                     <label htmlFor="password">Password:</label>
                     <input className="input" type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 </div>
+                {error ? <p>{errorMessage}</p> : null}
                 <div>
                     <button className="btn btn-primary self-start" type="submit">
                         Sign In
