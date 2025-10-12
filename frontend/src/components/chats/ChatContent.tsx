@@ -1,4 +1,4 @@
-import React, { useState, useRef, KeyboardEvent, CSSProperties } from "react";
+import React, { useState, useRef, useEffect, KeyboardEvent, CSSProperties } from "react";
 
 interface Message {
     id: number;
@@ -12,17 +12,19 @@ const ChatContent: React.FC = () => {
         { id: 3, text: "Just testing this chat layout." },
         {
             id: 4,
-            text: "This message is longer so you can see how it gets clipped below the textbox when the container runs out of space.",
+            text: "This message is long enough to make sure scrolling works properly when there's overflow.",
         },
-        { id: 5, text: "Yup, works fine without scrolling." },
-        { id: 6, text: "Another message for good measure." },
-        { id: 7, text: "This one might get clipped if height is too small." },
-        { id: 8, text: "Still here? Probably not visible if space ran out." },
+        { id: 5, text: "Yup, visible scrollbar now." },
+        { id: 6, text: "Add a few more messages..." },
+        { id: 7, text: "To see vertical scrolling in action." },
+        { id: 8, text: "This one might require scrolling." },
+        { id: 9, text: "Another one just for testing." },
     ];
 
     const [messages, setMessages] = useState<Message[]>(dummyMessages);
     const [text, setText] = useState("");
     const inputRef = useRef<HTMLTextAreaElement | null>(null);
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
     const send = () => {
         if (!text.trim()) return;
@@ -38,30 +40,34 @@ const ChatContent: React.FC = () => {
         }
     };
 
-    // --- STYLES ---
+    // Scroll to bottom when messages update
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    // --- Styles ---
     const containerStyle: CSSProperties = {
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        height: 240,
-        overflow: "hidden", // everything outside gets clipped
+        height: 300,
         boxSizing: "border-box",
-        position: "relative", // to layer messages/input properly
     };
 
     const messagesWrapperStyle: CSSProperties = {
         flex: 1,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "flex-end",
-        overflow: "hidden", // hide anything below container
+        overflowY: "scroll", // 👈 always show scrollbar
+        scrollBehavior: "smooth",
+        paddingRight: 6,
     };
 
     const messageStyle: CSSProperties = {
         wordBreak: "break-word",
         padding: "6px 8px",
         borderRadius: 6,
-        border: "1px solid rgba(0,0,0,0.08)",
+        border: "1px solid rgba(0,0,0,0.1)",
         marginBottom: 4,
     };
 
@@ -69,13 +75,15 @@ const ChatContent: React.FC = () => {
         display: "flex",
         gap: 8,
         alignItems: "center",
-        position: "relative",
-        zIndex: 2,
+        borderTop: "1px solid rgba(0,0,0,0.1)",
+        paddingTop: 8,
+        marginTop: 4,
     };
 
     const inputStyle: CSSProperties = {
         flex: 1,
         padding: "8px 10px",
+        resize: "none",
     };
 
     const buttonStyle: CSSProperties = {
@@ -86,10 +94,11 @@ const ChatContent: React.FC = () => {
         <div style={containerStyle}>
             <div style={messagesWrapperStyle}>
                 {messages.map((m) => (
-                    <div key={m.id} title={m.text} style={messageStyle}>
+                    <div key={m.id} style={messageStyle}>
                         {m.text}
                     </div>
                 ))}
+                <div ref={messagesEndRef} />
             </div>
 
             <div style={inputRowStyle}>
