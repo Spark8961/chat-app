@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import { FormProps } from "./types.js";
+import { KeyRound, Mail, UserRound } from "lucide-react";
 
 const SigninForm = ({ switchForm }: FormProps) => {
     const [email, setEmail] = useState("");
@@ -34,26 +35,35 @@ const SigninForm = ({ switchForm }: FormProps) => {
     return (
         <div className="container">
             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input className="input" type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                    <input className="input" type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                </div>
-                <div>
-                    <button className="btn btn-primary self-start" type="submit">
+                <fieldset className="fieldset">
+                    <legend className="fieldset-legend">
+                        <UserRound />
+                        Login
+                    </legend>
+                    <label htmlFor="email" className="floating-label">
+                        <span>Email</span>
+                        <label htmlFor="email" className="input focus:outline-none">
+                            <span className="label">
+                                <Mail />
+                            </span>
+                            <input type="email" name="email" id="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        </label>
+                    </label>
+                    <label htmlFor="password" className="input">
+                        <span className="label">
+                            <KeyRound />
+                        </span>
+                        <input className="input" type="password" name="password" id="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    </label>
+                    <button className="btn btn-neutral self-start" type="submit">
                         Sign In
                     </button>
-                </div>
+                    <p>Don't have an account?:</p>
+                    <button className="btn btn-neutral" onClick={switchForm}>
+                        Register
+                    </button>
+                </fieldset>
             </form>
-            <div>
-                <p>Don't have an account?:</p>
-                <button className="btn btn-primary" onClick={switchForm}>
-                    Register
-                </button>
-            </div>
         </div>
     );
 };
