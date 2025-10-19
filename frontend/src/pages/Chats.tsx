@@ -1,24 +1,23 @@
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
 import ChatList from "../components/chats/ChatList";
 import ChatContent from "../components/chats/ChatContent";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Chats = () => {
-    const { user, setUser, setIsAuthenticated } = useContext(AuthContext)!;
+    const queryClient = useQueryClient();
+    const user = queryClient.getQueryData(["user"]);
 
     const handleLogout = async () => {
         const result = await axios.post(`${import.meta.env.VITE_API_URL}/auth/logout`, {}, { withCredentials: true });
         if (result.status === 200) {
-            setIsAuthenticated(false);
-            setUser(null);
+            queryClient.invalidateQueries({ queryKey: ["user"] });
         }
     };
 
     return (
         <div>
             <div>
-                <p>Welcome {user?.username}.</p>
+                <p>Welcome {user?.name}.</p>
             </div>
             <div>
                 <button className="btn btn-primary" onClick={handleLogout}>

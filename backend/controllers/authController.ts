@@ -64,7 +64,7 @@ export const registerController = async (req: Request, res: Response) => {
 
 export const verifyController = async (req: Request, res: Response) => {
     try {
-        res.status(200).json({ authenticated: true });
+        res.status(200).json({ authenticated: true, user: req.user });
         return;
     } catch (err) {
         console.log(err);
