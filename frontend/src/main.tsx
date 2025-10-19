@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import Chats from "./pages/Chats";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// import "./index.css"; disabled CSS for now to get implementation done.
+import "./index.css";
 
 const router = createBrowserRouter([
     { path: "/", element: <Home /> },
