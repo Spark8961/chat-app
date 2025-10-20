@@ -1,13 +1,12 @@
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import { useQueryClient } from "@tanstack/react-query";
+import { useUser } from "../hooks/useUser";
 
 type ProtectedRouteProps = {
     children: ReactNode;
 };
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-    const queryClient = useQueryClient();
-    const user = queryClient.getQueryData(["user"]);
+    const { user } = useUser();
     return user ? <>{children}</> : <Navigate to={"/"} replace />;
 };
 

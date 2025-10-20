@@ -1,20 +1,15 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import { FormProps } from "./types.js";
+import { FormProps } from "./types";
 import { KeyRound, Mail, UserRound } from "lucide-react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "../../api";
+import { auth } from "../../hooks/useUser";
 
 const login = async ({ email, password }: { email: string; password: string }) => {
-    const data = { email: email, password: password };
-    await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, data, { withCredentials: true });
-};
-
-const auth = async () => {
-    const res = await axios.get(`${import.meta.env.VITE_API_URL}/auth/me`, { withCredentials: true });
-    console.log(res.data);
-    return res;
+    await api.post("/auth/login", { email, password });
 };
 
 const SigninForm = ({ switchForm }: FormProps) => {
@@ -23,30 +18,25 @@ const SigninForm = ({ switchForm }: FormProps) => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    useQuery({
-        queryKey: ["user"],
-        queryFn: auth,
-        enabled: false,
-    });
-
     const loginMutation = useMutation({
         mutationFn: login,
         onSuccess: async () => {
-            await queryClient.refetchQueries({ queryKey: ["user"] });
+            await queryClient.fetchQuery({ queryKey: ["user"], queryFn: auth });
             navigate("/chats");
         },
         onError: (err) => {
             if (axios.isAxiosError(err)) {
                 console.log(err.response?.data?.message);
+                queryClient.setQueryData(["user"], null);
             }
             console.log(err);
-            queryClient.invalidateQueries({ queryKey: ["user"] });
+            queryClient.setQueryData(["user"], null);
         },
     });
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        loginMutation.mutate({ email, password });
+        loginMutation.mutateAsync({ email, password });
     };
 
     return (
