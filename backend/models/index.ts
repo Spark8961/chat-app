@@ -1,3 +1,3 @@
-export * from "./Chat";
+export * from "./DM";
 export * from "./Message";
 export * from "./User";

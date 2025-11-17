@@ -2,6 +2,7 @@ import axios from "axios";
 import ChatActions from "./chatlist/ChatActions";
 import YesChats from "./chatlist/YesChats";
 import { useQuery } from "@tanstack/react-query";
+import { api } from "../../api";
 
 type ChatListData = {
     _id: string;
@@ -9,7 +10,7 @@ type ChatListData = {
 };
 
 const fetchChats = async (): Promise<ChatListData[]> => {
-    const res = await axios.get(`${import.meta.env.VITE_API_URL}/chats`, { withCredentials: true });
+    const res = await api.get("/chats", { withCredentials: true });
     return res.data;
 };
 const ChatList = () => {
@@ -23,7 +24,7 @@ const ChatList = () => {
             <div>Chat list</div>
             {data?.length === 0 ? (
                 <div>
-                    <p>No chats found, create or join one:</p>
+                    <p>No chats found, add user to join with by id:</p>
                     <ChatActions />
                 </div>
             ) : (

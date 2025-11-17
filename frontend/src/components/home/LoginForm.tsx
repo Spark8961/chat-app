@@ -24,7 +24,7 @@ const SigninForm = ({ switchForm }: FormProps) => {
             await queryClient.fetchQuery({ queryKey: ["user"], queryFn: auth });
             navigate("/chats");
         },
-        onError: (err) => {
+        onError: (err: unknown) => {
             if (axios.isAxiosError(err)) {
                 console.log(err.response?.data?.message);
                 queryClient.setQueryData(["user"], null);

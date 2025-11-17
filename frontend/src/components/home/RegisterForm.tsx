@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 
 import { FormProps } from "./types";
+import { api } from "../../api";
 
 const RegisterForm: React.FC<FormProps> = ({ switchForm }) => {
     const [username, setUsername] = useState("");
@@ -14,8 +15,8 @@ const RegisterForm: React.FC<FormProps> = ({ switchForm }) => {
         e.preventDefault();
 
         const data = { username: username, email: email, password: password };
-        await axios
-            .post(`${import.meta.env.VITE_API_URL}/auth/register`, data)
+        await api
+            .post("/auth/register", data)
             .then((result) => {
                 console.log(result.data);
             })

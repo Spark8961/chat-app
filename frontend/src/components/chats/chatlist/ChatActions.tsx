@@ -1,57 +1,36 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
+import { api } from "../../../api";
 
 enum ActionStates {
     Base,
-    Create,
-    Join,
+    AddDM,
 }
 
-const createChat = async (name: string) => {
-    const data = { name: name };
-    const result = await axios.post(`${import.meta.env.VITE_API_URL}/chats`, data, { withCredentials: true });
-    return result;
-};
-
-const joinChat = async (id: string) => {
-    const data = { chat_id: id };
-    const result = await axios.post(`${import.meta.env.VITE_API_URL}/chats/join`, data, { withCredentials: true });
+const AddDM = async (id: string) => {
+    const data = { user_id: id };
+    const result = await api.post("/chats/join/dm", data, { withCredentials: true });
     return result;
 };
 
 const ChatActions = () => {
     const [action, setAction] = useState<ActionStates>(ActionStates.Base);
-    const [chatName, setChatName] = useState<string>("");
-    const [chatId, setChatId] = useState<string>("");
+    const [userId, setUserId] = useState<string>("");
     const queryClient = useQueryClient();
 
-    const createMutation = useMutation({
-        mutationFn: createChat,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["chats"] });
-            setChatName("");
-            setAction(ActionStates.Base);
-        },
-    });
-
     const joinMutation = useMutation({
-        mutationFn: joinChat,
+        mutationFn: AddDM,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["chats"] });
-            setChatId("");
+            setUserId("");
             setAction(ActionStates.Base);
         },
     });
-
-    const handleCreateSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        createMutation.mutate(chatName);
-    };
 
     const handleJoinSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        joinMutation.mutate(chatId);
+        joinMutation.mutate(userId);
     };
 
     let content;
@@ -59,39 +38,18 @@ const ChatActions = () => {
         case ActionStates.Base:
             content = (
                 <div>
-                    <button onClick={() => setAction(ActionStates.Create)}>create</button> or <button onClick={() => setAction(ActionStates.Join)}>join</button>
+                    <button onClick={() => setAction(ActionStates.AddDM)}>add</button>
                 </div>
             );
             break;
-        case ActionStates.Create:
-            content = (
-                <div>
-                    <div>Create Chat</div>
-                    <form onSubmit={handleCreateSubmit}>
-                        <div>
-                            <label htmlFor="chatName">Chat Name:</label>
-                            <input className="input" type="text" name="chatName" id="chatName" value={chatName} onChange={(e) => setChatName(e.target.value)} />
-                        </div>
-                        <span>
-                            <button className="btn btn-primary self-start" type="submit">
-                                Create
-                            </button>
-                            <button className="btn btn-primary self-start" type="button" onClick={() => setAction(ActionStates.Base)}>
-                                Back
-                            </button>
-                        </span>
-                    </form>
-                </div>
-            );
-            break;
-        case ActionStates.Join:
+        case ActionStates.AddDM:
             content = (
                 <div>
                     <div>Join Chat</div>
                     <form onSubmit={handleJoinSubmit}>
                         <div>
-                            <label htmlFor="chatId">Chat ID:</label>
-                            <input className="input" type="text" name="chatId" id="chatId" value={chatId} onChange={(e) => setChatId(e.target.value)} />
+                            <label htmlFor="chatId">User ID:</label>
+                            <input className="input" type="text" name="userId" id="userId" value={userId} onChange={(e) => setUserId(e.target.value)} />
                         </div>
                         <span>
                             <button className="btn btn-primary self-start" type="submit">
